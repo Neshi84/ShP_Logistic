@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "sh-p-logistic-client-side-solution",
+    "id": "e12bc836-4489-4559-8033-992e56442338",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.16.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "sh-p-logistic description"
+      },
+      "longDescription": {
+        "default": "sh-p-logistic description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "sh-p-logistic Feature",
+        "description": "The feature that activates elements of the sh-p-logistic solution.",
+        "id": "cd85a621-5ed9-49ed-9f9d-00ee445c6a02",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/sh-p-logistic.sppkg"
+  }
+}

@@ -1,0 +1,16 @@
+@import "~@fluentui/react/dist/sass/References.scss";
+
+.visitTable {
+  border-collapse: collapse;
+  border: 1px solid;
+  width: 100%;
+  th {
+    border-collapse: collapse;
+    border: 1px solid;
+  }
+  td {
+    padding: 5px;
+    border-collapse: collapse;
+    border: 1px solid;
+  }
+}
