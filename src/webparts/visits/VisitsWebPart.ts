@@ -9,21 +9,31 @@ import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import * as strings from "VisitsWebPartStrings";
 import Visits from "./components/Visits";
 import { IVisitsProps } from "./components/IVisitsProps";
+import { HttpService, IHttpService } from "./services/HttpService";
 
 export interface IVisitsWebPartProps {
   description: string;
 }
 
 export default class VisitsWebPart extends BaseClientSideWebPart<IVisitsWebPartProps> {
+  private HttpService: IHttpService;
   public render(): void {
     const element: React.ReactElement<IVisitsProps> = React.createElement(
       Visits,
       {
         context: this.context,
+        HttpService: this.HttpService,
       }
     );
 
     ReactDom.render(element, this.domElement);
+  }
+
+  protected onInit(): Promise<void> {
+    this.HttpService = this.context.serviceScope.consume<IHttpService>(
+      HttpService.serviceKey
+    );
+    return super.onInit();
   }
 
   protected onDispose(): void {
