@@ -1,14 +1,13 @@
-import { Persona, PersonaSize, Stack } from "office-ui-fabric-react";
+import { Persona, PersonaSize, Separator, Stack } from "office-ui-fabric-react";
 import * as React from "react";
 import { FC } from "react";
 import { formatDate } from "../Helpers/Helpers";
-import { IVisitsProps } from "../Types/Types";
 import styles from "./Visits.module.scss";
 
-const VisitTable: FC<IVisitsProps> = (props): React.ReactElement => {
+const VisitTable: FC<any> = (props): React.ReactElement => {
     return (
         <>
-            <div>Visits</div>
+            <Separator>Visit list</Separator>
             <div>
                 <table className={styles.visitTable}>
                     <tr>
@@ -18,7 +17,7 @@ const VisitTable: FC<IVisitsProps> = (props): React.ReactElement => {
                         <th>Notes</th>
                         <th>Hosts</th>
                     </tr>
-                    {props.visits.map((visit) => {
+                    {props.visits.map((visit: any) => {
                         return (
                             <tr key={visit.ID}>
                                 <td>{visit.ID}</td>
@@ -28,7 +27,7 @@ const VisitTable: FC<IVisitsProps> = (props): React.ReactElement => {
 
                                 <td>
                                     <Stack horizontal>
-                                        {visit.Hosts.map((x) => {
+                                        {visit.Hosts.map((x: any) => {
                                             return (
                                                 <Persona
                                                     key={x.EMail}

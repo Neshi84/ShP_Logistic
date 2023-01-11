@@ -1,4 +1,14 @@
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { IDropdownOption } from "office-ui-fabric-react";
+import { IHttpService } from "../services/HttpService";
+
+export interface IVisitsProps {
+  context: WebPartContext;
+  HttpService?: IHttpService;
+}
+
 export interface IGuest {
+  ID?: string;
   VisitID?: number;
   FirstName: string;
   LastName: string;
@@ -38,6 +48,17 @@ export interface IVisitGet {
   OfficeId: number;
 }
 
-export interface IVisitsProps {
-  visits: IVisitGet[];
+export interface IUser {
+  id: number;
+  text: string;
+  secondaryText: string;
+}
+
+export interface IVisitFormProps {
+  visit: IVisit;
+  setVisit: React.Dispatch<React.SetStateAction<IVisit>>;
+  HttpService: IHttpService;
+  context: WebPartContext;
+  offices: IDropdownOption[];
+  getVisits: () => Promise<void>;
 }

@@ -8,8 +8,8 @@ import {
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import * as strings from "VisitsWebPartStrings";
 import Visits from "./components/Visits";
-import { IVisitsProps } from "./components/IVisitsProps";
 import { HttpService, IHttpService } from "./services/HttpService";
+import { IVisitsProps } from "./Types/Types";
 
 export interface IVisitsWebPartProps {
   description: string;

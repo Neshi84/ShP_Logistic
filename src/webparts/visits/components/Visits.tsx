@@ -1,10 +1,9 @@
 import * as React from "react";
 import { FC, ReactElement, useEffect, useState } from "react";
-import { IVisitsProps } from "./IVisitsProps";
 import { IDropdownOption, Separator, Spinner } from "office-ui-fabric-react";
 import VisitTable from "./VisitTable";
 import VisitForm from "./VisitForm";
-import { IOffice, IVisit, IVisitGet } from "../Types/Types";
+import { IOffice, IVisit, IVisitGet, IVisitsProps } from "../Types/Types";
 
 const initialState: IVisit = {
     DateFrom: new Date(),
@@ -24,25 +23,25 @@ const Visits: FC<IVisitsProps> = (props): ReactElement => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+
+    const getVisits = async (): Promise<void> => {
+        const visits = await props.HttpService.get("/_api/web/lists/GetByTitle('Visits')/items?$select=ID,DateFrom,DateTo,Notes,Hosts/EMail,Hosts/FirstName,Hosts/LastName&$expand=Hosts/Id");
+        console.log(visits.value);
+        setVisits(visits.value);
+        setLoading(false);
+    }
+
+    const getOffices = async (): Promise<void> => {
+        const response = await props.HttpService.get("/_api/web/lists/GetByTitle('Offices')/items");
+        const offices = response.value.map((item: IOffice) => {
+            return { key: item.Id, text: item.OfficeNumber };
+        });
+        setOffices(offices);
+        setLoading(false);
+    }
+
     // Fetch visit list
     useEffect(() => {
-        const getVisits = async (): Promise<void> => {
-            const visits = await props.HttpService.get("/_api/web/lists/GetByTitle('Visits')/items?$select=ID,DateFrom,DateTo,Notes,Hosts/EMail,Hosts/FirstName,Hosts/LastName&$expand=Hosts/Id");
-            console.log(visits.value);
-            setVisits(visits.value);
-            setLoading(false);
-        }
-
-        const getOffices = async (): Promise<void> => {
-            const response = await props.HttpService.get("/_api/web/lists/GetByTitle('Offices')/items");
-            const offices = response.value.map((item: IOffice) => {
-                return { key: item.Id, text: item.OfficeNumber };
-            });
-
-            console.log(offices);
-            setOffices(offices);
-            setLoading(false);
-        }
 
         getVisits().catch((error) => {
             console.log(error)
@@ -56,13 +55,15 @@ const Visits: FC<IVisitsProps> = (props): ReactElement => {
 
     }, []);
 
+
+
     return (
         <>
             {loading && <Spinner />}
             {error && <div>{error}</div>}
             {!loading && !error && (
                 <>
-                    <VisitForm visit={visit} setVisit={setVisit} offices={offices} context={props.context} />
+                    <VisitForm visit={visit} setVisit={setVisit} offices={offices} HttpService={props.HttpService} context={props.context} getVisits={getVisits} />
                     <Separator />
                     <VisitTable
                         //guests={guests}
@@ -75,3 +76,4 @@ const Visits: FC<IVisitsProps> = (props): ReactElement => {
 };
 
 export default Visits;
+

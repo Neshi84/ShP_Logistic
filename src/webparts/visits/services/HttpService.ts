@@ -1,10 +1,14 @@
 import { ServiceScope, ServiceKey } from "@microsoft/sp-core-library";
-import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
+import {
+  SPHttpClient,
+  SPHttpClientResponse,
+  ISPHttpClientOptions,
+} from "@microsoft/sp-http";
 import { PageContext } from "@microsoft/sp-page-context";
 
 export interface IHttpService {
-  /* getVisits(): Promise<any>; */
   get(query: string): Promise<any>;
+  post(data: any, query: string): Promise<any>;
 }
 
 export class HttpService implements IHttpService {
@@ -26,33 +30,30 @@ export class HttpService implements IHttpService {
     });
   }
 
-  /* getVisits(): Promise<IVisitGet> {
-    const url = `${this._currentWebUrl}/_api/web/lists/GetByTitle('Visits')/items?$select=ID,DateFrom,DateTo,Notes,Hosts/EMail,Hosts/FirstName,Hosts/LastName&$expand=Hosts/Id`;
-
-    return this._spHttpClient
-      .get(url, SPHttpClient.configurations.v1)
-      .then((response: SPHttpClientResponse) => response.json())
-      .then((items) => {
-        const visits: IVisit[] = items.value.map((visit: IVisitGet) => ({
-          ID: +visit.ID,
-          DateFrom: visit.DateFrom,
-          DateTo: visit.DateTo,
-          Notes: visit.Notes,
-          Hosts: visit.Hosts,
-        }));
-        return visits;
-      })
-      .catch((error) => {
-        return error;
-      });
-  } */
-
   async get(query: string): Promise<any> {
-    //const url = `${this._currentWebUrl}/_api/web/lists/GetByTitle('Visits')/items?$select=ID,DateFrom,DateTo,Notes,Hosts/EMail,Hosts/FirstName,Hosts/LastName&$expand=Hosts/Id`;
     const url = `${this._currentWebUrl}${query}`;
     const response: SPHttpClientResponse = await this._spHttpClient.get(
       url,
       SPHttpClient.configurations.v1
+    );
+
+    return response.json();
+  }
+
+  async post(data: any, query: string): Promise<any> {
+    const options: ISPHttpClientOptions = {
+      body: data,
+      headers: {
+        Accept: "application/json;odata=verbose",
+        "Content-type": "application/json;odata=verbose",
+        "odata-version": "3.0",
+      },
+    };
+
+    const response: SPHttpClientResponse = await this._spHttpClient.post(
+      `${this._currentWebUrl}${query}`,
+      SPHttpClient.configurations.v1,
+      options
     );
 
     return response.json();
