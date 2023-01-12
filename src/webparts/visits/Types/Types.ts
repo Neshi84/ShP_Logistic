@@ -9,7 +9,7 @@ export interface IVisitsProps {
 
 export interface IGuest {
   ID?: string;
-  VisitID?: number;
+  VisitId?: number;
   FirstName: string;
   LastName: string;
 }
@@ -60,5 +60,9 @@ export interface IVisitFormProps {
   HttpService: IHttpService;
   context: WebPartContext;
   offices: IDropdownOption[];
-  getVisits: () => Promise<void>;
+}
+
+export interface IVisitTableProps {
+  visits: IVisitGet[];
+  getVisitGuests: (visitId: number) => IGuest[];
 }

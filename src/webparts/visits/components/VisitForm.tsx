@@ -74,10 +74,15 @@ const VisitForm: FC<IVisitFormProps> = (props): ReactElement => {
         setGuest(guestInitialState);
     }
 
+    const deleteGuest = (firstName: string, lastName: string): void => {
+        const filteredGuests = guests.filter((guest: IGuest) => guest.FirstName !== firstName && guest.LastName !== lastName);
+        setGuests([...filteredGuests]);
+    }
+
     const handleSubmit = async (): Promise<void> => {
         try {
             // Validate input
-            if (!visit.DateFrom || !visit.DateTo || !visit.HostsId.results.length) {
+            if (!visit.DateFrom || !visit.DateTo || !visit.HostsId.results.length || guests.length === 0) {
                 setStatus("error");
                 return;
             }
@@ -95,7 +100,6 @@ const VisitForm: FC<IVisitFormProps> = (props): ReactElement => {
                 console.log(response.d);
             }
 
-            await props.getVisits();
             resetForm();
             setStatus("success");
 
@@ -146,6 +150,7 @@ const VisitForm: FC<IVisitFormProps> = (props): ReactElement => {
                         dateConvention={DateConvention.DateTime}
                         timeConvention={TimeConvention.Hours12}
                         isMonthPickerVisible={true}
+                        minDate={visit.DateFrom}
                         showLabels={false}
                         timeDisplayControlType={TimeDisplayControlType.Dropdown}
                     />
@@ -200,9 +205,9 @@ const VisitForm: FC<IVisitFormProps> = (props): ReactElement => {
                             {guests.length > 0 &&
                                 <Separator alignContent="start">Guest list</Separator>}
                             <div>
-                                {guests?.map((guest: any, index: number) => {
+                                {guests?.map((guest: IGuest, index: number) => {
                                     return (<div key={index}>
-                                        <span>{guest.FirstName + " " + guest.LastName}<IconButton iconProps={{ iconName: 'Cancel' }} /></span>
+                                        <span>{`${guest.FirstName} ${guest.LastName}`}<IconButton onClick={() => deleteGuest(guest.FirstName, guest.LastName)} iconProps={{ iconName: 'Cancel' }} /></span>
                                     </div>)
                                 })}
                             </div>
